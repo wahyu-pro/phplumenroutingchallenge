@@ -58,7 +58,7 @@ $router->get('/author/{id}', function ($id) use ($router) {
 
 $router->patch('/author/{id}', function ($id, Request $request) use ($router) {
     $data = [
-        'id' => $request->$id,
+        'id' => $id,
         'username' => $request->input('username'),
         'password' => $request->input('password'),
         'salt' => $request->input('salt'),
@@ -87,7 +87,6 @@ $router->post('/post', function (Request $request) use ($router) {
         'create_time' => $request->input('create_time'),
         'update_time' => $request->input('update_time'),
         'author_id' => $request->input('author_id')
-
     ];
     return response()->json($data, 201);
 });
@@ -111,8 +110,18 @@ $router->get('/post/{id}', function ($id) use ($router) {
     return "id - $id";
 });
 
-$router->patch('/post/{id}', function ($id) use ($router) {
-    return "id - $id";
+$router->patch('/post/{id}', function ($id, Request $request) use ($router) {
+    $data = [
+        'id' => $id,
+        'title' => $request->input('title'),
+        'content' => $request->input('content'),
+        'tags' => $request->input('tags'),
+        'status' => $request->input('status'),
+        'create_time' => $request->input('create_time'),
+        'update_time' => $request->input('update_time'),
+        'author_id' => $request->input('author_id')
+    ];
+    return response()->json($data, 201);
 });
 
 $router->delete('/post/{id}', function ($id) use ($router) {
@@ -156,8 +165,18 @@ $router->get('/comment/{id}', function ($id) use ($router) {
     return "id - $id";
 });
 
-$router->patch('/comment/{id}', function ($id) use ($router) {
-    return "id - $id";
+$router->patch('/comment/{id}', function ($id, Request $request) use ($router) {
+    $data = [
+        'id' => $id,
+        'content' => $request->input('content'),
+        'status' => $request->input('status'),
+        'create_time' => $request->input('create_time'),
+        'author_id' => $request->input('author_id'),
+        'email' => $request->input('email'),
+        'url' => $request->input('url'),
+        'post_id' => $request->input('post_id')
+    ];
+    return response()->json($data, 201);
 });
 
 $router->delete('/comment/{id}', function ($id) use ($router) {
