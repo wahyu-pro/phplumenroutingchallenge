@@ -53,7 +53,15 @@ $router->get('/author', function () use ($router) {
 });
 
 $router->get('/author/{id}', function ($id) use ($router) {
-    return "id - $id";
+    $data = [
+        'id' => $id,
+        'username' => "wahyu",
+        'password' => "wahyu",
+        'salt' => "garam",
+        'email' => "wahyu@gmail.com",
+        'profile' => "wahyu.jpg"
+    ];
+    return response()->json($data, 200);
 });
 
 $router->patch('/author/{id}', function ($id, Request $request) use ($router) {
@@ -107,7 +115,18 @@ $router->get('/post', function () use ($router) {
 });
 
 $router->get('/post/{id}', function ($id) use ($router) {
-    return "id - $id";
+    $data = [
+        'id' => $id,
+        'title' => 'jauh di mata dekat ditelinga',
+        'content' => 'content',
+        'tags' => 'tags',
+        'status' => 200,
+        'create_time' => 'create_time',
+        'update_time' => 'update_time',
+        'author_id' => 'author_id'
+
+    ];
+    return response()->json($data, 200);
 });
 
 $router->patch('/post/{id}', function ($id, Request $request) use ($router) {
@@ -162,7 +181,17 @@ $router->get('/post', function () use ($router) {
 });
 
 $router->get('/comment/{id}', function ($id) use ($router) {
-    return "id - $id";
+    $data = [
+        'id' => $id,
+        'content' => 'content',
+        'status' => 200,
+        'create_time' => 'create_time',
+        'author_id' => 'author_id',
+        'email' => 'wahyu@gmail.com',
+        'url' => 'http/wahyu.com',
+        'post_id' => '020'
+    ];
+    return response()->json($data, 200);
 });
 
 $router->patch('/comment/{id}', function ($id, Request $request) use ($router) {
