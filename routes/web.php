@@ -237,15 +237,24 @@ $router->group(['middleware' => 'auth'], function () use ($router) {
     // Author
     $router->get('author', 'AuthorController@index');
     $router->post('author', 'AuthorController@create');
+    $router->patch('author/{id}', 'AuthorController@update');
+    $router->get('author/{id}', 'AuthorController@getById');
+    $router->delete('author/{id}', 'AuthorController@delete');
     // end author
 
     // Post
     $router->get('post', 'PostController@index');
     $router->post('post', 'PostController@create');
+    $router->patch('post/{id}', 'PostController@update');
+    $router->get('post/{id}', 'PostController@getById');
+    $router->delete('post/{id}', 'PostController@delete');
     // end post
 
     // comment
     $router->get('comment', 'CommentController@index');
     $router->post('comment', 'CommentController@create');
+    $router->patch('author/{id}', 'PostController@update');
+    $router->get('author/{id}', 'PostController@getById');
+    $router->delete('author/{id}', 'PostController@delete');
     // end comment
 });
