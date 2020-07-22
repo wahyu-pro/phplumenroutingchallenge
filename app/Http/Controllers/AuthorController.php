@@ -73,6 +73,9 @@ class AuthorController extends Controller
     {
         $id = $request->route('id');
         $authorId = Author::find($id);
+        if (!$authorId) {
+            return "not Author";
+        }
         return response()->json($authorId, 200);
     }
 
