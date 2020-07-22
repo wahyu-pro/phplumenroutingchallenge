@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Post;
 
 class PostController extends Controller
 {
@@ -18,92 +19,63 @@ class PostController extends Controller
      * @param  UserRepository  $users
      * @return void
      */
-    public function __construct()
-    {
-    }
 
     public function index()
     {
-        $data['status'] = "success";
-        $data['result'] = [
-            'id' => 1,
-            'title' => 'jauh di mata dekat ditelinga',
-            'content' => 'content',
-            'tags' => 'tags',
-            'status' => 200,
-            'create_time' => 'create_time',
-            'update_time' => 'update_time',
-            'author_id' => 'author_id'
-        ];
-        $data['uses'] = "PostController";
+        $post = Post::all();
         Log::info('PostControllerMethodIndex');
-        return response($data, 200)
-            ->header("content-type", "application/json")
-            ->header("author", "wahyu");
+        return response()->json($post, 200);
+    }
+
+    public function getAuthor()
+    {
+        $results = Post::with(array('author' => function($query){
+            $query->select();
+        }))->get();
+
+        return response()->json($results, 200);
     }
 
     public function create(Request $request)
     {
-        $data['status'] = "success";
-        $data['result'] = [
-            'id' => $request->input('id'),
-            'title' => $request->input('title'),
-            'content' => $request->input('content'),
-            'tags' => $request->input('tags'),
-            'status' => $request->input('status'),
-            'create_time' => $request->input('create_time'),
-            'update_time' => $request->input('update_time'),
-            'author_id' => $request->input('author_id')
-        ];
-        Log::info("PostControllerMethodCreate");
-        return response($data, 200)
-            ->header("content-type", "application/json")
-            ->header("author", "wahyu");
+        $post = new Post();
+        $post->title = $request->input('title');
+        $post->content = $request->input('content');
+        $post->tags = $request->input('tags');
+        $post->status = $request->input('status');
+        $post->author_id = $request->input('author_id');
+        $post->save();
+        Log::info('add data success');
+        return "success";
     }
 
     public function update(Request $request)
     {
         $id = $request->route('id');
-        $data['status'] = "success";
-        $data['result'] = [
-            "id" => $id,
-            'title' => $request->input('title'),
-            'content' => $request->input('content'),
-            'tags' => $request->input('tags'),
-            'status' => $request->input('status'),
-            'create_time' => $request->input('create_time'),
-            'update_time' => $request->input('update_time'),
-            'author_id' => $request->input('author_id')
-        ];
-        $data['uses'] = "PostController";
-        Log::info("PostControllerMethodUpdate");
-        // return response($data, 200)
-        //     ->header("content-type", "application/json");
-        return response()->json($data, 201);
+        $post = Post::find($id);
+        $post->title = $request->input('title');
+        $post->content = $request->input('content');
+        $post->tags = $request->input('tags');
+        $post->status = $request->input('status');
+        $post->author_id = $request->input('author_id');
+        $post->save();
+        Log::info('update data success');
+        return "success";
     }
 
-    public function getByid(Request $request)
+    public function findById(Request $request)
     {
         $id = $request->route('id');
-        $data = [
-            'id' => $id,
-            'title' => 'jauh di mata dekat ditelinga',
-            'content' => 'content',
-            'tags' => 'tags',
-            'status' => 200,
-            'create_time' => 'create_time',
-            'update_time' => 'update_time',
-            'author_id' => 'author_id'
-
-        ];
-        Log::info("PostControllerMethodGetById");
-        return response()->json($data, 200);
+        $authorId = Post::find($id);
+        return response()->json($authorId, 200);
     }
 
     public function delete(Request $request)
     {
         $id = $request->route('id');
-        Log::info("PostControllerMethodDelete");
-        return "id = ".$id;
+        $post = Post::find($id);
+        $post->delete();
+        Log::info("delete success");
+        return "success";
     }
 }

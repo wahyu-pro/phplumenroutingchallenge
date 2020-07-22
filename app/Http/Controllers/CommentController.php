@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Comment;
 
 class CommentController extends Controller
 {
@@ -18,94 +19,67 @@ class CommentController extends Controller
      * @param  UserRepository  $users
      * @return void
      */
-    public function __construct()
-    {
-    }
 
     public function index()
     {
-        $data['status'] = "success";
-        $data['result'] = [
-            'id' => 1,
-            'content' => 'content',
-            'status' => 200,
-            'create_time' => 'create_time',
-            'author_id' => 'author_id',
-            'email' => 'wahyu@gmail.com',
-            'url' => 'http/wahyu.com',
-            'post_id' => '020'
-        ];
-        $data['uses'] = "CommentController";
+        $comment = Comment::all();
         Log::info('CommentControllerMethodIndex');
-        return response($data, 200)
-            ->header("content-type", "application/json")
-            ->header("author", "wahyu");
+        return response()->json($comment, 200);
+    }
+
+    public function getPostAndAuthor()
+    {
+        $results = Comment::with(array('author' => function($query){
+            $query->select();
+        }))->with(array('post' => function($query){
+            $query->select();
+        }))->get();
+
+        return response()->json($results, 200);
     }
 
     public function create(Request $request)
     {
-        $data['status'] = "success";
-        $data['result'] = [
-            'id' => $request->input('id'),
-            'content' => $request->input('content'),
-            'status' => $request->input('status'),
-            'create_time' => $request->input('create_time'),
-            'author_id' => $request->input('author_id'),
-            'email' => $request->input('email'),
-            'url' => $request->input('url'),
-            'post_id' => $request->input('post_id')
-        ];
-        $data['uses'] = 'CommentController';
-        Log::info('CommentControllerMethodCreate');
-        return response($data, 200)
-            ->header("content-type", "application/json")
-            ->header("author", "wahyu");
+        $comment = new Comment;
+        $comment->content = $request->input('content');
+        $comment->status = $request->input('status');
+        $comment->author_id = $request->input('author_id');
+        $comment->email = $request->input('email');
+        $comment->url = $request->input('url');
+        $comment->post_id = $request->input('post_id');
+        $comment->save();
+        Log::info('add data success');
+        return "success";
     }
 
     public function update(Request $request)
     {
         $id = $request->route('id');
-        $data['status'] = "success";
-        $data = [
-            'id' => $id,
-            'content' => $request->input('content'),
-            'status' => $request->input('status'),
-            'create_time' => $request->input('create_time'),
-            'author_id' => $request->input('author_id'),
-            'email' => $request->input('email'),
-            'url' => $request->input('url'),
-            'post_id' => $request->input('post_id')
-        ];
-        $data['uses'] = 'CommentController';
-        Log::info('CommentControllerMethodUpdate');
-        return response()->json($data, 201);
+        $comment = Comment::find($id);
+        $comment->content = $request->input('content');
+        $comment->status = $request->input('status');
+        $comment->author_id = $request->input('author_id');
+        $comment->email = $request->input('email');
+        $comment->url = $request->input('url');
+        $comment->post_id = $request->input('post_id');
+        $comment->save();
+        Log::info('update data success');
+        return "success";
     }
 
     public function getByid(Request $request)
     {
         $id = $request->route('id');
-        $data['status'] = "success";
-        $data['result'] = [
-            'id' => $id,
-            'content' => 'content',
-            'status' => 200,
-            'create_time' => 'create_time',
-            'author_id' => 'author_id',
-            'email' => 'wahyu@gmail.com',
-            'url' => 'http/wahyu.com',
-            'post_id' => '020'
-        ];
-        $data['uses'] = "CommentController";
-        Log::info('CommentControllerMethodGetById');
-        return response($data, 200)
-            ->header("content-type", "application/json")
-            ->header("author", "wahyu");
+        $commentId = Comment::find($id);
+        return response()->json($commentId, 200);
     }
 
     public function delete(Request $request)
     {
         $id = $request->route('id');
-        Log::info('CommentControllerMethodDelete');
-        return 'id = ' . $id;
+        $comment = Comment::find($id);
+        $comment->delete();
+        Log::info("delete success");
+        return "success";
     }
 }

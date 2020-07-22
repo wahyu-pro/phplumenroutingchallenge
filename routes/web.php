@@ -227,34 +227,37 @@ use Illuminate\Http\Request;
 // $router->get('comment/{age}', ['middleware' => 'agehecker:age', 'uses' =>  'CommentController@index']);
 // $router->post('comment', 'CommentController@create');
 
-$router->post('auth', 'AuthController@generate');
+// $router->post('auth', 'AuthController@valid');
 
-$router->group(['middleware' => 'auth'], function () use ($router) {
-    $router->get('/', function () use ($router) {
-        return $router->app->version();
-    });
+// $router->group(['middleware' => 'auth'], function () use ($router) {
+
+$router->group(['prefix' => 'api'], function () use ($router) {
 
     // Author
+    $router->get('author/{id}', 'AuthorController@findById');
+    $router->get('author/join', 'AuthorController@getPostAndComment');
     $router->get('author', 'AuthorController@index');
     $router->post('author', 'AuthorController@create');
     $router->patch('author/{id}', 'AuthorController@update');
-    $router->get('author/{id}', 'AuthorController@getById');
     $router->delete('author/{id}', 'AuthorController@delete');
     // end author
 
     // Post
     $router->get('post', 'PostController@index');
+    $router->get('post/join', 'PostController@getAuthor');
     $router->post('post', 'PostController@create');
     $router->patch('post/{id}', 'PostController@update');
-    $router->get('post/{id}', 'PostController@getById');
+    $router->get('post/{id}', 'PostController@findById');
     $router->delete('post/{id}', 'PostController@delete');
     // end post
 
     // comment
     $router->get('comment', 'CommentController@index');
+    $router->get('comment/join', 'CommentController@getPostAndAuthor');
     $router->post('comment', 'CommentController@create');
-    $router->patch('author/{id}', 'PostController@update');
-    $router->get('author/{id}', 'PostController@getById');
-    $router->delete('author/{id}', 'PostController@delete');
+    $router->patch('comment/{id}', 'CommentController@update');
+    $router->get('comment/{id}', 'CommentController@getById');
+    $router->delete('comment/{id}', 'CommentController@delete');
     // end comment
 });
+// });

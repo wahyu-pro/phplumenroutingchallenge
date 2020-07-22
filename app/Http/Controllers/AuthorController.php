@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Author;
 
 class AuthorController extends Controller
 {
@@ -24,77 +25,64 @@ class AuthorController extends Controller
 
     public function index()
     {
-        $data['status'] = "success";
-        $data['result'] = [
-            'id' => 1,
-            'username' => "wahyu",
-            'password' => "wahyu",
-            'salt' => "garam",
-            'email' => "wahyu@gmail.com",
-            'profile' => "wahyu.jpg"
-        ];
-        $data['uses'] = "AuthorController";
+        $authors = Author::all();
         Log::info('AuthorControllerMethodIndex');
-        return response($data, 200)
-            ->header("content-type", "application/json")
-            ->header("author", "wahyu");
+        return response()->json($authors, 200);
     }
+
+    // public function getPostAndComment()
+    // {
+    //     $results = Author::with(array('author' => function($query){
+    //         $query->select();
+    //     }))->get();
+
+    //     return "ok";
+    // }
 
     public function create(Request $request)
     {
-        $data['status'] = "success";
-        $data['result'] = [
-            'id' => $request->input('id'),
-            'username' => $request->input('username'),
-            'password' => $request->input('password'),
-            'salt' => $request->input('salt'),
-            'email' => $request->input('email'),
-            'profile' => $request->input('profile')
-        ];
-        $data['uses'] = "AuthorControllerCreate";
-        Log::info("AuthorControllerMethodCreate");
-        return response($data, 200)
-            ->header("content-type", "application/json")
-            ->header("author", "wahyu");
+
+        $author = new Author();
+        $author->name = $request->input('name');
+        $author->password = $request->input('password');
+        $author->salt = $request->input('salt');
+        $author->email = $request->input('email');
+        $author->profile = $request->input('profile');
+        $author->save();
+
+        Log::info('add data success');
+        return "Add data success";
     }
 
     public function update(Request $request)
     {
         $id = $request->route('id');
-        $data = [
-            'id' => $id,
-            'username' => $request->input('username'),
-            'password' => $request->input('password'),
-            'salt' => $request->input('salt'),
-            'email' => $request->input('email'),
-            'profile' => $request->input('profile')
-        ];
-        $data['uses'] = "AuthorController";
-        Log::info('AuthorControllerUpdate');
-        return response()->json($data, 201);
+        $author = Author::find($id);
+        $author->name = $request->input('name');
+        $author->password = $request->input('password');
+        $author->salt = $request->input('salt');
+        $author->email = $request->input('email');
+        $author->profile = $request->input('profile');
+        $author->save();
+
+        Log::info('update success');
+        return "success";
     }
 
-    public function getByid(Request $request)
+    public function findById(Request $request)
     {
         $id = $request->route('id');
-        $data['status'] = "success";
-        $data['result'] = [
-            'id' => $id,
-            'username' => "wahyu",
-            'password' => "wahyu",
-            'salt' => "garam",
-            'email' => "wahyu@gmail.com",
-            'profile' => "wahyu.jpg"
-        ];
-        $data['uses'] = "AuthorController";
-        Log::info('AuthorControllerMethodGetById');
-        return response()->json($data, 200);
+        $authorId = Author::find($id);
+        return response()->json($authorId, 200);
     }
 
     public function delete(Request $request)
     {
         $id = $request->route('id');
+        $user = Author::find($id);
+        $user->delete();
         Log::info('AuthorControllerMethodDelete');
-        return "id = " . $id;
+
+        return "delete success";
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -25,7 +26,7 @@ class AuthController extends Controller
     //     $this->request = $request;
     // }
 
-    public function generate(Request $request)
+    public function getToken(Request $request)
     {
         $key = "example_key";
         $payload = [
@@ -35,7 +36,7 @@ class AuthController extends Controller
             "iat" => time(),
             "nbf"=> time()
         ];
-        return response()->json(["token" => JWT::encode($payload, env($key))]);
+        return response()->json(["token" => JWT::encode($payload, $key)]);
         // return response()->json(["token" => "wahyu"]);
     }
 
@@ -46,12 +47,13 @@ class AuthController extends Controller
     //     return response()->json($decoded);
     // }
 
-    // public function valid(Request $request)
-    // {
-    //     if ($this->request->input("name") == "wahyu") {
-    //         return $this->generate($request);
-    //     }
-    //     return abort(401);
-    // }
+    public function valid(Request $request)
+    {
+        if ($request->input("username") == "wahyu") {
+            return $this->getToken($request);
+        }
+        Log::error("password/username wrong");
+        return abort(401);
+    }
 
 }
