@@ -22,9 +22,14 @@ class CommentController extends Controller
 
     public function index()
     {
-        $comment = Comment::all();
+        // $comment = Comment::all();
+        $results = Comment::with(array('author' => function($query){
+            $query->select();
+        }))->with(array('post' => function($query){
+            $query->select();
+        }))->get();
         Log::info('CommentControllerMethodIndex');
-        return response()->json($comment, 200);
+        return response()->json($results, 200);
     }
 
     public function getPostAndAuthor()

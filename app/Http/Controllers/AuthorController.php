@@ -69,14 +69,15 @@ class AuthorController extends Controller
         return "success";
     }
 
-    public function findById(Request $request)
+    public function findById(Request $request, $id)
     {
-        $id = $request->route('id');
+        // $id = $request->route('id');
         $authorId = Author::find($id);
         if (!$authorId) {
             return "not Author";
         }
         return response()->json($authorId, 200);
+        // return "ok";
     }
 
     public function delete(Request $request)

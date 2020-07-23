@@ -22,19 +22,22 @@ class PostController extends Controller
 
     public function index()
     {
-        $post = Post::all();
-        Log::info('PostControllerMethodIndex');
-        return response()->json($post, 200);
-    }
-
-    public function getAuthor()
-    {
+        // $post = Post::all();
         $results = Post::with(array('author' => function($query){
             $query->select();
         }))->get();
-
+        Log::info('PostControllerMethodIndex');
         return response()->json($results, 200);
     }
+
+    // public function getAuthor()
+    // {
+    //     $results = Post::with(array('author' => function($query){
+    //         $query->select();
+    //     }))->get();
+
+    //     return response()->json($results, 200);
+    // }
 
     public function create(Request $request)
     {
@@ -67,6 +70,9 @@ class PostController extends Controller
     {
         $id = $request->route('id');
         $authorId = Post::find($id);
+        if (!$authorId) {
+            return "not Author";
+        }
         return response()->json($authorId, 200);
     }
 

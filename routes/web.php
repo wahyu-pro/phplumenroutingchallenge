@@ -235,7 +235,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     // Author
     $router->get('author/{id}', 'AuthorController@findById');
-    $router->get('author/join', 'AuthorController@getPostAndComment');
+    // $router->get('authorjoin', 'AuthorController@getPostAndComment');
     $router->get('author', 'AuthorController@index');
     $router->post('author', 'AuthorController@create');
     $router->patch('author/{id}', 'AuthorController@update');
@@ -244,7 +244,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     // Post
     $router->get('post', 'PostController@index');
-    $router->get('post/join', 'PostController@getAuthor');
+    // $router->get('postjoin', 'PostController@getAuthor');
     $router->post('post', 'PostController@create');
     $router->patch('post/{id}', 'PostController@update');
     $router->get('post/{id}', 'PostController@findById');
@@ -253,7 +253,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     // comment
     $router->get('comment', 'CommentController@index');
-    $router->get('comment/join', 'CommentController@getPostAndAuthor');
+    // $router->get('commentjoin', 'CommentController@getPostAndAuthor');
     $router->post('comment', 'CommentController@create');
     $router->patch('comment/{id}', 'CommentController@update');
     $router->get('comment/{id}', 'CommentController@getById');
