@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Post extends Migration
+class Comments extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,16 @@ class Post extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title');
             $table->string('content');
-            $table->string('tags');
             $table->string('status');
-            $table->timestamps();
             $table->integer('author_id')->unsigned();
+            $table->string('email');
+            $table->string('url');
+            $table->integer('post_id')->unsigned();
+            $table->timestamps();
         });
-
-        // Schema::table('post', function (Blueprint $table) {
-        //     $table->foreign('author_id')->references('id')->on('author');
-        // });
     }
 
     /**
