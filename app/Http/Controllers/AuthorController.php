@@ -58,6 +58,10 @@ class AuthorController extends Controller
     {
         $id = $request->route('id');
         $author = Author::find($id);
+        $authorId = Author::find($id);
+        if (!$authorId) {
+            return "not Author";
+        }
         $author->name = $request->input('name');
         $author->password = $request->input('password');
         $author->salt = $request->input('salt');
@@ -84,6 +88,9 @@ class AuthorController extends Controller
     {
         $id = $request->route('id');
         $user = Author::find($id);
+        if (!$user) {
+            return "not Author";
+        }
         $user->delete();
         Log::info('AuthorControllerMethodDelete');
 
