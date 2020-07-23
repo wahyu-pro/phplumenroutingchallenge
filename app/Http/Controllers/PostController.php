@@ -57,7 +57,7 @@ class PostController extends Controller
         $id = $request->route('id');
         $post = Post::find($id);
         if (!$post) {
-            return "not Author";
+            return "not post";
         }
         $post->title = $request->input('title');
         $post->content = $request->input('content');
@@ -74,7 +74,7 @@ class PostController extends Controller
         $id = $request->route('id');
         $post = Post::find($id);
         if (!$post) {
-            return "not Author";
+            return "not post";
         }
         return response()->json($post, 200);
     }
@@ -84,7 +84,7 @@ class PostController extends Controller
         $id = $request->route('id');
         $post = Post::find($id);
         if (!$post) {
-            return "not Author";
+            return "not post";
         }
         $post->delete();
         Log::info("delete success");

@@ -62,7 +62,7 @@ class CommentController extends Controller
         $id = $request->route('id');
         $comment = Comment::find($id);
         if (!$comment) {
-            return "not Author";
+            return "not Comment";
         }
         $comment->content = $request->input('content');
         $comment->status = $request->input('status');
@@ -80,7 +80,7 @@ class CommentController extends Controller
         $id = $request->route('id');
         $commentId = Comment::find($id);
         if (!$commentId) {
-            return "not Author";
+            return "not Comment";
         }
         return response()->json($commentId, 200);
     }
@@ -90,7 +90,7 @@ class CommentController extends Controller
         $id = $request->route('id');
         $comment = Comment::find($id);
         if (!$comment) {
-            return "not Author";
+            return "not Comment";
         }
         $comment->delete();
         Log::info("delete success");
